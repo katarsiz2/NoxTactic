@@ -1,0 +1,9 @@
+*.obj
+Debug/NoxTactic.Build.CppClean.log
+*.lastbuildstate
+Debug/NoxTactic.log
+*.tlog
+Debug/NoxTactic.unsuccessfulbuild
+Debug/vc120.idb
+*.pdb
+Debug/RCa02172

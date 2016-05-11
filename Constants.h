@@ -56,7 +56,7 @@ namespace Paths
     const string ActionsIcons = "actions icons\\";
     const string ActionsActiveIcons = "actions icons\\active\\";
     const string EnchantsPictures = "enchants\\";
-    const string EnchantsIcons = "enchants\\icons";
+    const string EnchantsIcons = "enchants\\icons\\";
     const string WallsPictures = "walls\\";
     const string TilesPictures = "tiles\\";
 
