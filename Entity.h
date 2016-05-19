@@ -2,6 +2,7 @@
 class Action;
 class Enchant;
 class Spell;
+class Renderer;
 #include "Strings.h"
 #include "Geometry.h"
 #include "Constants.h"
@@ -10,6 +11,7 @@ class Spell;
 #include <cstdlib>
 using std::vector;
 using std::list;
+using std::pair;
 
 enum DefEntFlags
 {
@@ -287,7 +289,7 @@ class Unit: public Entity
 {//TODO: remake channel actions all-slot array into "by demand array" with direct reference to action;
 protected:
     int enchants[Counters::enchants];
-    int cooldowns[Counters::cooldowns];
+    
     int movepoints, ammo, ammo_manabuffer;
     bool is_in_blocking_state;
     bool is_jumping;
@@ -301,27 +303,89 @@ protected:
         L_Action(int time, CoordI& coor, const Action *action): time(time), coor(coor), action(action) {}
         L_Action(): time(0), coor(Coord0), action(nullptr) {}
     } long_action; //currently under casting
-    struct C_Action {
-        Entity* target;
-        int metadata;
-        bool Is_Cast;
-        void SetCasting(Entity* target) {
-            this->target = target;
-            Is_Cast = true;
-            metadata = 0;
-        }
-        void UnSet() {
-            target = nullptr;
-            Is_Cast = false;
-        }
-    } c_action[Counters::Channeling_actions];
-
-    int FireResist() { 
-        return min(GetPrototype().resist_fire + (IsEnchanted(ENCHANT_PROTECTION_FIRE) ? 50 : 0), 100); }
+    
+    int FireResist() { return min(GetPrototype().resist_fire + (IsEnchanted(ENCHANT_PROTECTION_FIRE) ? 50 : 0), 100); }
     int ShockResist() { return min(GetPrototype().resist_shock + (IsEnchanted(ENCHANT_PROTECTION_SHOCK) ? 50 : 0), 100); }
     int VenomResist() { return min(IsEnchanted(ENCHANT_PROTECTION_POISON) ? 50 : 0, 100); }
     int Armor() { return GetPrototype().armor; }
 public:
+    class UnitCooldowns
+    {
+        list<pair<const Action*, int>> cds;
+    public:
+        typedef list<pair<const Action*, int>>::const_iterator const_iterator;
+        int FindCooldown(const Action *action) const {
+            for (auto it = cds.begin(); it != cds.end(); ++it) {
+                if ((*it).first == action) {
+                    return (*it).second;
+                }
+            }
+            return 0;
+        }
+        void SetCooldown(const Action *action, int cooldown) {
+            for (auto it = cds.begin(); it != cds.end(); ++it) {
+                if ((*it).first == action) {
+                    (*it).second = cooldown;
+                }
+            }
+            cds.push_back(make_pair(action, cooldown));
+        }
+        void DeleteCooldown(const Action *action) {
+            for (auto it = cds.begin(); it != cds.end(); ++it) {
+                if ((*it).first == action) {
+                    cds.erase(it);
+                    return;
+                }
+            }
+        }
+        const_iterator GetIterator() const { return cds.cbegin(); }
+        bool IsIteratorInside(const const_iterator& it) const { return (it != cds.cend()); }
+        void DecreaseAll() {
+            for (auto it = cds.begin(); it != cds.end(); ++it) {
+                (*it).second--;
+            }
+        }
+    } cooldowns;
+    struct ChannelActionData
+    {
+        Entity* target;
+        CoordI coor_target;
+        int metadata;
+    };
+    class Channelings
+    {
+        list<pair<const Action*, ChannelActionData>> chnls;
+    public:
+        typedef list<pair<const Action*, ChannelActionData>>::const_iterator const_iterator;
+        //returns data linked with specified action;
+        ChannelActionData* FindChannelingAction(const Action *action) {
+            for (auto it = chnls.begin(); it != chnls.end(); ++it) {
+                if ((*it).first == action) {
+                    return &((*it).second);
+                }
+            }
+            return nullptr;
+        }
+        ChannelActionData* AddChannelingAction(const Action *action) {
+            chnls.push_front(make_pair(action, ChannelActionData()));
+            return (&(*chnls.begin()).second); //return addr of newly added channel;
+        }
+        void DeleteChannelingAction(const Action *action) {
+            for (auto it = chnls.begin(); it != chnls.end(); ++it) {
+                if ((*it).first == action) {
+                    chnls.erase(it);
+                    return;
+                }
+            }
+        }
+        void DeleteAll() {
+            chnls.clear();
+        }
+        const_iterator GetIterator() const { return chnls.cbegin(); }
+        bool IsIteratorInside(const const_iterator& it) const { return (it != chnls.cend());
+        }
+    } channelings;
+
     virtual ErrorBase* CheckConsistency() const;
     const DefaultUnit& GetPrototype() const {return dynamic_cast<const DefaultUnit&>(Entity::GetPrototype());}
     virtual ~Unit(){}
@@ -376,15 +440,13 @@ public:
     bool IsJumping() const { return is_jumping; }
     BLOCK_QUALITY BlockType() const { return GetPrototype().weapon->block_quality; }
     bool isBlocking() const { return is_in_blocking_state; }
-    int getCooldown(enumCooldowns id) const { return cooldowns[id]; }
     L_Action getLAction() const { return long_action; }
     virtual const Action* Spellbar(int ID) const { return GetPrototype().Actions[ID-1]; }
     virtual const Weapon* MyWeapon() const { return GetPrototype().weapon; }
     virtual Entity* Clone() const;
     virtual bool CanUseTrap() const { return GetPrototype().can_trap; }
     virtual bool CanUseBomber() const { return GetPrototype().can_bomber; }
-    C_Action& GetC_Action(enumChannelingActions id) { return c_action[id]; }
-    const C_Action& GetC_Action(enumChannelingActions id) const { return c_action[id]; }
+
     friend Action;
     friend Spell;
     friend Ability;
@@ -392,6 +454,7 @@ public:
 
     friend Battle;
     friend Entity;
+    friend Renderer;
 };
 
 #pragma warning(disable:4800)  //casting long into bool

@@ -382,73 +382,73 @@ void Game::init(){
     gr->setPictureTexture(Interface.objectlist_selector, TextureHolder.Selection_Texture);
     gr->setPictureVisibility(Interface.objectlist_selector, false);
 
-    FunctionContainer actions;
+    FunctionContainer actions_functions;
     ChannelingFunctionContainer Channeling_actions;
     CollisionFunctionContainer collisions;
     TriggerFunctionContainer triggers;
     DieFunctionContainer diefuncs;
     {
-        actions.resize(Counters::actions);
+        actions_functions.resize(Counters::actions);
         Channeling_actions.resize(Counters::Channeling_actions);
         collisions.resize(Counters::projectiles);
         triggers.resize(Counters::triggers);
         diefuncs.resize(Counters::diefuncs);
 
-        actions[NO_ACTION] = nullptr;
+        actions_functions[NO_ACTION] = nullptr;
 
-        actions[ACTION_FIREBALL] = nullptr;
-        actions[ACTION_ANCHOR] = nullptr;
-        actions[ACTION_BURN] = &Battle::Burn;
-        actions[ACTION_CHANNEL] = nullptr;
-        actions[ACTION_COUNTERSPELL] = &Battle::Counterspell;
-        actions[ACTION_DEATHRAY] = &Battle::Deathray;
-        actions[ACTION_DISPELL_UNDEAD] = &Battle::DispellUndead;
-        actions[ACTION_ENERGY_BOLT] = nullptr;
-        actions[ACTION_EARTHQUAKE] = &Battle::Earthquake;
-        actions[ACTION_LIGHTNING] = nullptr;
-        actions[ACTION_PROTECTION_FIRE] = nullptr;
-        actions[ACTION_PROTECTION_SHOCK] = nullptr;
-        actions[ACTION_PROTECTION_POISON] = nullptr;
-        actions[ACTION_FORCEFIELD] = nullptr;
-        actions[ACTION_HEAL_LESSER] = &Battle::LesserHeal;
-        actions[ACTION_HEAL_GREATER] = nullptr;
-        actions[ACTION_HASTE] = nullptr;
-        actions[ACTION_INVERSION] = &Battle::Inversion;
-        actions[ACTION_MAGIC_MISSILE] = nullptr;
-        actions[ACTION_MANA_DRAIN] = nullptr;
-        actions[ACTION_PULL] = &Battle::Pull;
-        actions[ACTION_PUSH] = &Battle::Push;
-        actions[ACTION_REFLECTIVE_SHIELD] = &Battle::ReflectiveShield;
-        actions[ACTION_FIRE_RING] = &Battle::RingOfFire;
-        actions[ACTION_SHOCK] = nullptr;
-        actions[ACTION_SLOW] = nullptr;
-        actions[ACTION_SWAP] = nullptr;
-        actions[ACTION_TELEPORT] = &Battle::TeleportToTarget;
-        actions[ACTION_WALL] = &Battle::MagicWall;
-        actions[ACTION_FIST_OF_VENGEANCE] = &Battle::FistOfVengeance;
-        actions[ACTION_VAMPIRISM] = nullptr;
-        actions[ACTION_STUN] = nullptr;
-        actions[ACTION_TOXIC_CLOUD] = &Battle::ToxicCloud;
-        actions[ACTION_FORCE_OF_NATURE] = nullptr;
-        actions[ACTION_PIXIES] = nullptr;
-        actions[ACTION_CHARM] = nullptr;
-        actions[ACTION_METEOR] = &Battle::Meteor;
-        actions[ACTION_POISON] = nullptr;
-        actions[ACTION_OBLITERATION] = nullptr;
-        actions[ACTION_NULLIFY] = nullptr;
-        actions[ACTION_BERSERKER] = &Battle::Berserker;
-        actions[ACTION_HARPOON] = &Battle::Harpoon;
-        actions[ACTION_WARCRY] = &Battle::Warcry;
-        actions[ACTION_HAMMER] = &Battle::HammerStrike;
-        actions[ACTION_LONGSWORD] = &Battle::MeleeStrike;
-        actions[ACTION_MACE] = &Battle::MeleeStrike;
-        actions[ACTION_BOW] = nullptr;
-        actions[ACTION_FORCE_STAFF] = nullptr;
-        actions[ACTION_FIRE_STAFF] = nullptr;
-        actions[ACTION_HELLFIRE_STAFF] = &Battle::HellfireStaff;
-        actions[ACTION_SHURIKEN] = nullptr;
-        actions[ACTION_FIRESWORD] = &Battle::MeleeStrike;
-        actions[ACTION_FON_STAFF] = nullptr;
+        actions_functions[ACTION_FIREBALL] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_ANCHOR] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_BURN] = &Battle::Burn;
+        actions_functions[ACTION_CHANNEL] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_COUNTERSPELL] = &Battle::Counterspell;
+        actions_functions[ACTION_DEATHRAY] = &Battle::Deathray;
+        actions_functions[ACTION_DISPELL_UNDEAD] = &Battle::DispellUndead;
+        actions_functions[ACTION_ENERGY_BOLT] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_EARTHQUAKE] = &Battle::Earthquake;
+        actions_functions[ACTION_LIGHTNING] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_PROTECTION_FIRE] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_PROTECTION_SHOCK] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_PROTECTION_POISON] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_FORCEFIELD] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_HEAL_LESSER] = &Battle::LesserHeal;
+        actions_functions[ACTION_HEAL_GREATER] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_HASTE] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_INVERSION] = &Battle::Inversion;
+        actions_functions[ACTION_MAGIC_MISSILE] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_MANA_DRAIN] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_PULL] = &Battle::Pull;
+        actions_functions[ACTION_PUSH] = &Battle::Push;
+        actions_functions[ACTION_REFLECTIVE_SHIELD] = &Battle::ReflectiveShield;
+        actions_functions[ACTION_FIRE_RING] = &Battle::RingOfFire;
+        actions_functions[ACTION_SHOCK] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_SLOW] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_SWAP] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_TELEPORT] = &Battle::TeleportToTarget;
+        actions_functions[ACTION_WALL] = &Battle::MagicWall;
+        actions_functions[ACTION_FIST_OF_VENGEANCE] = &Battle::FistOfVengeance;
+        actions_functions[ACTION_VAMPIRISM] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_STUN] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_TOXIC_CLOUD] = &Battle::ToxicCloud;
+        actions_functions[ACTION_FORCE_OF_NATURE] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_PIXIES] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_CHARM] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_METEOR] = &Battle::Meteor;
+        actions_functions[ACTION_POISON] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_OBLITERATION] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_NULLIFY] = &Battle::EnchantSpellPerform;
+        actions_functions[ACTION_BERSERKER] = &Battle::Berserker;
+        actions_functions[ACTION_HARPOON] = &Battle::Harpoon;
+        actions_functions[ACTION_WARCRY] = &Battle::Warcry;
+        actions_functions[ACTION_HAMMER] = &Battle::HammerStrike;
+        actions_functions[ACTION_LONGSWORD] = &Battle::MeleeStrike;
+        actions_functions[ACTION_MACE] = &Battle::MeleeStrike;
+        actions_functions[ACTION_BOW] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_FORCE_STAFF] = &Battle::ChannelingActionPerform;
+        actions_functions[ACTION_FIRE_STAFF] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_HELLFIRE_STAFF] = &Battle::HellfireStaff;
+        actions_functions[ACTION_SHURIKEN] = &Battle::ProjectileActionPerform;
+        actions_functions[ACTION_FIRESWORD] = &Battle::MeleeStrike;
+        actions_functions[ACTION_FON_STAFF] = &Battle::ProjectileActionPerform;
 
         Channeling_actions[CONT_LIGHTNING] = &Battle::LightningApply;
         Channeling_actions[CONT_ENERGY_BOLT] = &Battle::EnergyBoltApply;
@@ -488,7 +488,7 @@ void Game::init(){
     Loader::loadStrings(Strings);
     Loader::loadGestures(Gestures);
     Loader::loadEnchants(Enchants);
-    Loader::loadActions(Actions, actions, Channeling_actions);
+    Loader::loadActions(Actions, actions_functions, Channeling_actions);
     Loader::loadWeapons(Weapons, Actions);
     Loader::loadDefaultEntities(Entities, Actions, Weapons, collisions, triggers, diefuncs);
     Loader::loadMaps(Maps, Entities, Walls, Tiles);
@@ -909,37 +909,21 @@ void Renderer::RenderEntityInfo(const Entity* ent) {
                 graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String(STR_IS_PERFORMING) + game->String(unit->getLAction().action->Name()));
             }
         }
-        //c_actions
-        for (int i = 0; i < Counters::Channeling_actions && num < max_charms; ++i) {
-            enumChannelingActions id = static_cast<enumChannelingActions>(i);
-            if (unit->GetC_Action(id).Is_Cast) {
-                graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], game->DefAction(ContToCommon(id))->MyIcon());
-                if (statusbar_selection == num) {
-                    graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, game->DefAction(ContToCommon(id))->MyIcon());
-                    graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String(game->DefAction(ContToCommon(id))->PerformingTip()));
-                }
+        //channeling_actions
+        for (auto it = unit->channelings.GetIterator(); unit->channelings.IsIteratorInside(it) && num < max_charms; ++it) {
+            graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], (*it).first->MyIcon());
+            if (statusbar_selection == num) {
+                graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, (*it).first->MyIcon());
+                graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String((*it).first->PerformingTip()));
             }
         }
+        
         //cooldowns
-        if (unit->getCooldown(CD_WARCRY)) {
-            graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], game->DefAction(ACTION_WARCRY)->MyIcon());
+        for (auto it = unit->cooldowns.GetIterator(); unit->cooldowns.IsIteratorInside(it) && num < max_charms; ++it) {
+            graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], (*it).first->MyIcon());
             if (statusbar_selection == num) {
-                graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, game->DefAction(ACTION_WARCRY)->MyIcon());
-                graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String(game->DefAction(ACTION_WARCRY)->Name()) + game->String(STR_IS_ON_COOLDOWN));
-            }
-        }
-        if (unit->getCooldown(CD_BERSERKER)) {
-            graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], game->DefAction(ACTION_BERSERKER)->MyIcon());
-            if (statusbar_selection == num) {
-                graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, game->DefAction(ACTION_BERSERKER)->MyIcon());
-                graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String(game->DefAction(ACTION_BERSERKER)->Name()) + game->String(STR_IS_ON_COOLDOWN));
-            }
-        }
-        if (unit->getCooldown(CD_HARPOON)) {
-            graphics->setPictureTexture(game->Interface.EntInfo.enchantbar[num++], game->DefAction(ACTION_HARPOON)->MyIcon());
-            if (statusbar_selection == num) {
-                graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, game->DefAction(ACTION_HARPOON)->MyIcon());
-                graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String(game->DefAction(ACTION_HARPOON)->Name()) + game->String(STR_IS_ON_COOLDOWN));
+                graphics->setPictureTexture(game->Interface.EntInfo.status_tip_icon, (*it).first->MyIcon());
+                graphics->setLabelText(game->Interface.EntInfo.status_tip, game->String((*it).first->Name()) + game->String(STR_IS_ON_COOLDOWN));
             }
         }
         //enchants
@@ -1414,11 +1398,11 @@ void Battle::CellClick(const CoordI& coor, const long flags) {
                 renderer.GridIsChanged();
                 renderer.InterfaceIsChanged();
             } else {
-                if (action->CheckForValidity(this, CurSel.ent, coor)) {
+                if (CheckActionValidity(action, CurSel.ent, coor)) {
                     game->Sound()->PlaySound(action->MySound());
-                    action->ApplyPenalties(this, CurSel.ent, coor);
-                    renderer.GridIsChanged();
-                    renderer.InterfaceIsChanged();
+                    PayActionCost(action, CurSel.ent, coor);
+//                     renderer.GridIsChanged();
+//                     renderer.InterfaceIsChanged();
                     if (action->Flag(AFLAG_IS_AGGRESSIVE)) {
                         for (int i = 1; i < Counters::enchants; ++i) {
                             enumEnchants id = static_cast<enumEnchants>(i);
@@ -1442,9 +1426,9 @@ void Battle::CellClick(const CoordI& coor, const long flags) {
         CurMode = CURSORMODE_SELECT;
         break;
     case CURSORMODE_LTARGETING:
-        if (unit->long_action.action->CheckForValidity(this, CurSel.ent, coor)) {
+        if (CheckActionValidity(unit->long_action.action, CurSel.ent, coor)) {
             game->Sound()->PlaySound(unit->long_action.action->MySound());
-            unit->long_action.action->ApplyPenalties(this, CurSel.ent, coor);
+            PayActionCost(unit->long_action.action, CurSel.ent, coor);
             if (unit->long_action.action->Flag(AFLAG_IS_AGGRESSIVE)) {
                 for (int i = 1; i < Counters::enchants; ++i) {
                     enumEnchants id = static_cast<enumEnchants>(i);
@@ -1776,7 +1760,7 @@ int Battle::Damage(Entity* source, Entity* target, const Dmg damage) {
     renderer.InterfaceIsChanged();
     int tmp = target->HP();
     target->GetDamage(damage);
-    StopCActions(target);
+    StopChannelActions(target);
     tmp -= target->HP();
     if (target != source && source != nullptr) {
         logger.addEntry(STR_WAS_DAMAGED_BY, target->Name(), source->Name(), tmp);
@@ -1807,15 +1791,22 @@ void Battle::Kill(Entity* ent, Entity* killer) {
         }
     }
 }
-void Battle::StopCActions(Entity* ent) {
+void Battle::StopChannelActions(Entity* ent, bool dispell /*= false*/)
+{
     renderer.GridIsChanged();
     renderer.InterfaceIsChanged();
     if (ent->Flag(ENT_IS_UNIT)) {
         Unit* unit = dynamic_cast<Unit*>(ent);
-        for (int i = 0; i < Counters::Channeling_actions; ++i) {
-            if (game->DefAction(ContToCommon(static_cast<enumChannelingActions>(i)))->Flag(AFLAG_IS_BROKEN_BY_DAMAGE)) { //HACK: casting number into enum
-                unit->c_action[i].UnSet();
+        list<const Action*> unchannels;
+        for (auto it = unit->channelings.GetIterator(); unit->channelings.IsIteratorInside(it); ++it) {
+            const Action_ChannelingEffect *chan = dynamic_cast<const Action_ChannelingEffect*>((*it).first);    //channeling part of action (if exist
+            if ((*it).first->Flag(AFLAG_IS_BROKEN_BY_DAMAGE) || 
+                dispell && chan && chan->IsDispellable()) {
+                unchannels.push_back((*it).first);
             }
+        }
+        for (auto it = unchannels.begin(); it != unchannels.end(); ++it) {
+            unit->channelings.DeleteChannelingAction((*it));
         }
     }
 }
@@ -2041,7 +2032,8 @@ void Battle::AddStep(const CoordI& coor){
     }
 }
 void Battle::ClearMoveTrace() {
-    MoveTrace.trace.clear(); 
+    MoveTrace.trace.clear();
+    renderer.GridIsChanged();
 }
 int Battle::EvaluateStepCost(const TraceStep& step) const {
     if (step.IsJumpEnd) { return 0; }
@@ -2296,12 +2288,8 @@ void Battle::EndTurn(Entity* ent) {
                 AddLAction(unit);                   //adding to list for further processing
             }
         }
-        for (int i = 0; i < Counters::Channeling_actions; ++i) {
-            enumChannelingActions id = static_cast<enumChannelingActions>(i);
-            if (unit->c_action[id].Is_Cast) {
-                const Action_ChannelingEffect* cont_act = dynamic_cast<const Action_ChannelingEffect*>(game->DefAction(ContToCommon(id)));
-                cont_act->ApplyEffect(this, ent, unit->c_action[id].target);
-            }
+        for (auto it = unit->channelings.GetIterator(); unit->channelings.IsIteratorInside(it); ++it) {
+            (dynamic_cast<const Action_ChannelingEffect*>((*it).first))->ApplyEffect(this, ent, (*it).second.target);
         }
         if (IsEnchanted(unit, ENCHANT_PIXIES)) {
             auto ents = grid.GetSolidSquare(unit->Coor(), game->DefAction(ACTION_PIXIES)->Range(), GridComparer_Units());
@@ -2378,6 +2366,106 @@ void Battle::ClearLActions() {
     LongActions.i = -1;
 }
 
+
+bool Battle::CheckActionValidity(const Action* action, const Entity* actor, const CoordI& target) {
+    if (!actor->Flag(ENT_IS_UNIT)) { return false; }
+    const Unit* unit = dynamic_cast<const Unit*>(actor);
+    //const DefaultUnit& me = unit->GetPrototype();
+    bool is_lengthy = (action->TimeToPerform() > 0);
+    if (unit->getActionPoints() < action->APCost()) { return false; }
+
+    if (action->Flag(AFLAG_CANT_TARGET_SELF)) {
+        if (unit->coor == target) { return false; } //DONT TARGET YOURSELF >c
+    }
+    if (action->Flag(AFLAG_MUST_TARGET_EMPTY)) {
+        if (grid(target)) { return false; }
+    }
+    if (action->Flag(AFLAG_MUST_TARGET_UNIT)) {
+        if (!grid(target) || !grid(target)->Flag(ENT_IS_UNIT)) { return false; }
+    }
+    if (action->Flag(AFLAG_CANT_BE_ANCHORED)) {
+        if (unit->IsEnchanted(ENCHANT_ANCHOR)) { return false; }
+    }
+    if (action->Flag(AFLAG_NEED_AMMO)) {
+        if (!unit->ammo) { return false; }
+    }
+    if (action->Flag(AFLAG_MUST_TURN_TO_TARGET) || action->Flag(AFLAG_IS_MELEE)) {    //melee always requires turning
+        Direction tmp = unit->coor.getDirection(target);
+        if (tmp != NO_DIRECTION && tmp != unit->Dir() && !unit->movepoints) { return false; } //directions not match and no points left to turn
+    }
+    if (action->Flag(AFLAG_IS_MELEE)) {
+        if (grid.Dist(unit->coor, target, true) != 1) { return false; } //too far away
+    }
+    if (action->Flag(AFLAG_IS_TARGETLESS)) {
+        if (unit->coor != target) { return false; }
+    }
+    if (action->Flag(AFLAG_RANGE_LIMITED)) {
+        if (grid.Dist(unit->coor, target, true) > action->Range()) { return false; }
+    }
+    if (action->Flag(AFLAG_MUST_TARGET_VISIBLE)) {
+        if (!grid.IsSeenFrom(unit->Coor(), target)) { return false; }
+    }
+    const Spell* spell = dynamic_cast<const Spell*>(action);
+    if (spell || unit->IsEnchanted(ENCHANT_NULLIFICATION) || unit->mp < spell->Manacost()) { return false; }
+
+    const Ability* ability = dynamic_cast<const Ability*>(action);
+    if (ability || unit->cooldowns.FindCooldown(action) > 0) { return false; }
+
+    return true;
+}
+void Battle::PayActionCost(const Action* action, Entity* actor, const CoordI& target) {
+    if (!actor->Flag(ENT_IS_UNIT)) { return; }
+    Unit* unit = dynamic_cast<Unit*>(actor);
+    unit->action_points -= action->APCost();
+    if (action->Flag(AFLAG_NEED_AMMO)) {
+        unit->ammo--;
+    }
+    if (action->Flag(AFLAG_MUST_TURN_TO_TARGET) || action->Flag(AFLAG_IS_MELEE)) {
+        Direction dir = unit->coor.getDirection(target);
+        if (dir != NO_DIRECTION && dir != unit->Dir()) {
+            Turn(unit, dir);
+            unit->movepoints--;
+        }
+    }
+    unit->is_in_blocking_state = false;
+    const Spell* spell = dynamic_cast<const Spell*>(action);
+    if (spell) {
+        unit->mp -= spell->Manacost();
+    }
+    const Ability* ability = dynamic_cast<const Ability*>(action);
+    if (ability) {
+        unit->cooldowns.SetCooldown(action, ability->Cooldown());
+    }
+}
+void Battle::ProjectileActionPerform(Entity* source, const CoordI& coor, const Action* me)
+{
+    const Action_ProjectileLauncher *proj_action = dynamic_cast<const Action_ProjectileLauncher*>(me);
+    if (!proj_action) { return; }
+    if (proj_action->IsHoming()) {
+        LaunchHomingProjectile(proj_action->ProjectileID(), source, grid(coor));
+    } else {
+        LaunchProjectile(proj_action->ProjectileID(), source, coor);
+    }
+}
+void Battle::EnchantSpellPerform(Entity* source, const CoordI& coor, const Action* me)
+{
+    const EnchantSpell *ench_action = dynamic_cast<const EnchantSpell*>(me);
+    if (!ench_action) { return; }
+    if (coor == source->Coor()) {
+        EnchantWith(source, ench_action->EnchantID());
+    } else {
+        LaunchHomingProjectile(ENT_ENCHANTBALL, source, grid(coor), ench_action->EnchantID());
+    }
+}
+void Battle::ChannelingActionPerform(Entity* source, const CoordI& coor, const Action* me)
+{
+    Unit* unit = dynamic_cast<Unit*>(source);
+    if (!unit) { return; }
+    auto chan_info = unit->channelings.FindChannelingAction(me);
+    if (!chan_info) { chan_info = unit->channelings.AddChannelingAction(me); }
+    chan_info->target = grid(coor);
+    chan_info->metadata = 0;
+}
 //=======================ACTIONS=========================
 void Battle::ApplyWeaponEnchant(const Weapon::WeaponEnchant& enchant, Entity *source, Entity *target, Angle attack_angle) {
     switch (enchant.type) {
@@ -2472,14 +2560,7 @@ void Battle::Counterspell(Entity* source, const CoordI& coor, const Action* me) 
                     Disenchant(*it, static_cast<enumEnchants>(id));
                 }
             }
-            for (int id = 1; id < Counters::Channeling_actions; ++id) {
-                enumChannelingActions tmpid = static_cast<enumChannelingActions>(id);
-                if (unit->GetC_Action(tmpid).Is_Cast) {
-                    if (dynamic_cast<const Action_ChannelingEffect*>(game->DefAction(ContToCommon(tmpid)))->IsDispellable()) {
-                        unit->GetC_Action(tmpid).UnSet();
-                    }
-                }
-            }
+            StopChannelActions(*it, true);
         }
     }
 }
@@ -2876,7 +2957,7 @@ void Battle::LightningApply_common(Unit* source, Entity* target, const Action* m
     for (int num = 0; num < LightningImpulseNumber; ++num) {
         game->Delay(30);
         if (magic_reserve < LightningImpulseCost) {
-            source->GetC_Action(me->ChannelingID()).UnSet();
+            source->channelings.DeleteChannelingAction(me);
             return;
         }
         //if target is invalid, find new one
@@ -2893,7 +2974,7 @@ void Battle::LightningApply_common(Unit* source, Entity* target, const Action* m
                 }
             }
             if (!target) {
-                source->GetC_Action(me->ChannelingID()).UnSet();
+                source->channelings.DeleteChannelingAction(me);
                 return;
             }
         }
@@ -2939,7 +3020,7 @@ void Battle::EnergyBoltApply(Entity* source, Entity* target, const Action* me) {
         //if target is invalid, stop casting
         if (source->mp < LightningImpulseCost || grid.Dist(source->Coor(), target->Coor(), true) > me->Range() ||
             !grid.IsSeenFrom(source->Coor(), target->Coor()) || target->IsDead()) {
-            dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID()).UnSet();
+            dynamic_cast<Unit*>(source)->channelings.DeleteChannelingAction(me);
             return;
         }
         //applying damage and reducing mana
@@ -2954,7 +3035,7 @@ void Battle::GreaterHealApply(Entity* source, Entity* target, const Action* me) 
         //if target is invalid, stop casting
         if (source->mp < GreaterHealImpulseCost || grid.Dist(source->Coor(), target->Coor(), true) > me->Range() ||
             !grid.IsSeenFrom(source->Coor(), target->Coor()) || target->IsDead() || target->HP() == target->MaxHP()) {
-            dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID()).UnSet();
+            dynamic_cast<Unit*>(source)->channelings.DeleteChannelingAction(me);
             return;
         }
         //applying damage and reducing mana
@@ -2970,7 +3051,7 @@ void Battle::DrainManaApply(Entity* source, Entity* target, const Action* me) {
     for (auto it = ents.begin(); it != ents.end(); ++it) {
         game->Delay(100);
         if (source->MP() == source->MaxMP()) {
-            dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID()).UnSet();
+            dynamic_cast<Unit*>(source)->channelings.DeleteChannelingAction(me);
         }
         if (!mana_to_drain) {
             return;
@@ -2986,34 +3067,41 @@ void Battle::DrainManaApply(Entity* source, Entity* target, const Action* me) {
 void Battle::ChannelApply(Entity* source, Entity* target, const Action* me) {
     int tmp = min(min(source->MaxMP() - source->MP(), ChannelPerApply), source->HP() - 1);
     if (tmp == 0) {
-        dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID()).UnSet();
+        dynamic_cast<Unit*>(source)->channelings.DeleteChannelingAction(me);
     }
     source->hp -= tmp;
     RestoreMP(source, tmp);
 }
 void Battle::CharmApply(Entity* source, Entity* target, const Action* me) {
-    auto c_action = dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID());
+    Unit *unit = dynamic_cast<Unit*>(source);
+    if (!unit) { return; }
+    auto chan = unit->channelings.FindChannelingAction(me);
+    if (!chan) { return; }
     if (grid.Dist(source->Coor(), target->Coor(), true) > me->Range() ||
         !grid.IsSeenFrom(source->Coor(), target->Coor()) || target->IsDead()) {
-        c_action.UnSet();
+        unit->channelings.DeleteChannelingAction(me);
     }
-    ++c_action.metadata;
-    if (c_action.metadata >= target->CharmSize()) {
-        c_action.UnSet();
+    ++(chan->metadata);
+    if (chan->metadata >= target->CharmSize()) {
+        unit->channelings.DeleteChannelingAction(me);
         target->team = source->Team();
         SetOwner(source, target);
     }
 }
 void Battle::ObliterationApply(Entity* source, Entity* target, const Action* me) {
+    Unit *unit = dynamic_cast<Unit*>(source);
+    if (!unit) { return; }
     int tmp = min(ObliterationManaPerTurn, source->MP());
     BurnMP(source, tmp);
-    auto c_action = dynamic_cast<Unit*>(source)->GetC_Action(me->ChannelingID());
-    c_action.metadata += tmp;
+    auto chan = unit->channelings.FindChannelingAction(me);
+    if (!chan) { return; }
+    chan->metadata += tmp;
     if (source->MP() == 0) {
         auto ents = grid.GetSolidSquare(source->Coor(), me->Range(), GridComparer_Mortal());
         for (auto it = ents.begin(); it != ents.end(); ++it) {
-            Damage(source, *it, Dmg(DMG_MAGIC, c_action.metadata * ObliterationDamagePerMana, DFLAG_IGNORES_ALL));
+            Damage(source, *it, Dmg(DMG_MAGIC, chan->metadata * ObliterationDamagePerMana, DFLAG_IGNORES_ALL));
         }
+        unit->channelings.DeleteChannelingAction(me);
     }
 }
 ErrorBase* Battle::CheckConsistency() const {
@@ -3051,6 +3139,7 @@ ErrorBase* Battle::CheckConsistency() const {
     }
     return nullptr;
 }
+
 void Logger::addEntry(enumStrings entry_base, LogArgument arg1 /*= LogArgument()*/, LogArgument arg2 /*= LogArgument()*/, LogArgument arg3 /*= LogArgument()*/) {
     if (entry_base == NO_STRING) { return; }
     string entrybase = game->String(entry_base); //TODO: implement logger without using Game*
@@ -3101,4 +3190,345 @@ void Replayer::addInput(const UserInput inp) {
 }
 const list<Replayer::UserInput>& Replayer::getInputLog() const {
     return input_log;
+}
+
+
+//===================loaders
+
+Map::~Map() {
+    for_each(entities.begin(), entities.end(), [](Entity *ent){
+        delete ent;
+    });
+}
+void Loader::loadMaps(MapContainer& container, EntityContainer& entities, WallContainer& walls, TileContainer& tiles) {
+    vector<Entity*> tmpent;
+    vector<vector<Tile*>> tmptiles(20, vector<Tile*>(14, tiles[TILE_GRASS]));
+    vector<vector<Wall*>> tmpwalls(20, vector<Wall*>(14, nullptr));
+    for (int i = 1; i <= 20; ++i) {
+        tmpwalls[i-1][0] = walls[WALL_BRICK];
+        tmpwalls[i-1][13] = walls[WALL_BRICK];
+    }
+    for (int i = 2; i < 14; ++i) {
+        tmpwalls[0][i-1] = walls[WALL_BRICK];
+        tmpwalls[19][i-1] = walls[WALL_BRICK];
+    }
+    tmpwalls[3][3] = walls[WALL_BRICK];
+    tmpwalls[4][3] = walls[WALL_BRICK];
+    tmpwalls[4][4] = walls[WALL_BRICK];
+    tmpwalls[5][4] = walls[WALL_BRICK];
+    tmpwalls[5][5] = walls[WALL_BRICK];
+    tmpwalls[6][5] = walls[WALL_BRICK];
+    tmpwalls[6][6] = walls[WALL_BRICK];
+    tmpwalls[7][6] = walls[WALL_BRICK];
+    tmpwalls[7][7] = walls[WALL_BRICK];
+
+    tmpwalls[3][8] = walls[WALL_BRICK];
+
+    tmpwalls[5][11] = walls[WALL_BRICK];
+    tmpwalls[6][11] = walls[WALL_BRICK];
+    tmpwalls[7][11] = walls[WALL_BRICK];
+    tmpwalls[8][11] = walls[WALL_BRICK];
+    tmpwalls[9][11] = walls[WALL_BRICK];
+    tmpwalls[7][10] = walls[WALL_BRICK];
+
+    tmpwalls[10][1] = walls[WALL_BRICK];
+    tmpwalls[10][2] = walls[WALL_BRICK];
+    tmpwalls[10][3] = walls[WALL_BRICK];
+    tmpwalls[10][4] = walls[WALL_BRICK];
+    tmpwalls[10][6] = walls[WALL_BRICK];
+    tmpwalls[10][7] = walls[WALL_BRICK];
+
+    tmpwalls[13][3] = walls[WALL_BRICK];
+    tmpwalls[14][3] = walls[WALL_BRICK];
+    tmpwalls[15][3] = walls[WALL_BRICK];
+    tmpwalls[16][3] = walls[WALL_BRICK];
+    tmpwalls[16][4] = walls[WALL_BRICK];
+    tmpwalls[17][4] = walls[WALL_BRICK];
+
+    tmpwalls[17][7] = walls[WALL_BRICK];
+    tmpwalls[17][8] = walls[WALL_BRICK];
+
+    tmpwalls[15][12] = walls[WALL_BRICK];
+
+    tmpwalls[13][7] = walls[WALL_BRICK];
+    tmpwalls[13][8] = walls[WALL_BRICK];
+    tmpwalls[13][9] = walls[WALL_BRICK];
+    tmpwalls[13][10] = walls[WALL_BRICK];
+    tmpwalls[13][11] = walls[WALL_BRICK];
+    tmpwalls[12][11] = walls[WALL_BRICK];
+    tmpwalls[11][11] = walls[WALL_BRICK];
+
+
+    tmpent.reserve(22);
+    tmpent.push_back(entities[ENT_WAR_BLUE]->Create(CoordI(3, 3), TEAM_BLUE, RIGHT));
+    tmpent.push_back(entities[ENT_WAR_RED]->Create(CoordI(3, 4), TEAM_BLUE, RIGHT));
+    tmpent.push_back(entities[ENT_WIZ_YELLOW]->Create(CoordI(3, 8), TEAM_BLUE, RIGHT));
+    tmpent.push_back(entities[ENT_WIZ_BLUE]->Create(CoordI(3, 9), TEAM_BLUE, RIGHT));
+    tmpent.push_back(entities[ENT_WIZ_RED]->Create(CoordI(5, 6), TEAM_BLUE, DOWN));
+    tmpent.push_back(entities[ENT_WIZ_RED]->Create(CoordI(3, 12), TEAM_BLUE, RIGHT));
+    tmpent.push_back(entities[ENT_CONJ_ORANGE]->Create(CoordI(3, 13), TEAM_BLUE, RIGHT));
+
+    tmpent.push_back(entities[ENT_WAR_BLUE]->Create(CoordI(12, 2), TEAM_RED, DOWN));
+    tmpent.push_back(entities[ENT_WAR_RED]->Create(CoordI(13, 2), TEAM_RED, DOWN));
+    tmpent.push_back(entities[ENT_WIZ_YELLOW]->Create(CoordI(17, 10), TEAM_RED, LEFT));
+    tmpent.push_back(entities[ENT_WIZ_BLUE]->Create(CoordI(17, 11), TEAM_RED, LEFT));
+    tmpent.push_back(entities[ENT_WIZ_RED]->Create(CoordI(17, 12), TEAM_RED, LEFT));
+    tmpent.push_back(entities[ENT_WIZ_RED]->Create(CoordI(18, 6), TEAM_RED, LEFT));
+    tmpent.push_back(entities[ENT_CONJ_ORANGE]->Create(CoordI(18, 7), TEAM_RED, LEFT));
+
+    tmpent.push_back(entities[ENT_OBELISK_LOTD]->Create(CoordI(4, 5), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK_LOTD]->Create(CoordI(4, 8), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK_LOTD]->Create(CoordI(7, 5), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK_PRIMITIVE]->Create(CoordI(7, 11), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK_PRIMITIVE]->Create(CoordI(11, 9), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK_PRIMITIVE]->Create(CoordI(16, 5), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK]->Create(CoordI(17, 8), NO_TEAM, LEFT));
+    tmpent.push_back(entities[ENT_OBELISK]->Create(CoordI(17, 9), NO_TEAM, LEFT));
+
+    Map* tmpmap = new Map(CoordI(20, 14), tmpent, tmpwalls, tmptiles, 2);
+    container.push_back(tmpmap);
+}
+
+void Loader::loadActions(ActionContainer& container,
+    FunctionContainer& functions, ChannelingFunctionContainer& Channeling_functions) {
+    container.resize(Counters::actions);
+    ChannelingFunctionContainer::iterator Channeling_iter = Channeling_functions.begin();
+
+    container[NO_ACTION] = new Action(functions[NO_ACTION], 0, 0, 0, NO_STRING,
+        NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING, 0);
+
+    container[ACTION_FIREBALL] = new ProjectileSpell(Spell(Action(functions[ACTION_FIREBALL], 0, 2, 0,
+        STR_ACTION_FIREBALL, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_CANT_TARGET_SELF + AFLAG_IS_AGGRESSIVE + AFLAG_MUST_TURN_TO_TARGET),
+        30, G_ZO, G_ZO, G_UN), ENT_FIREBALL, false);
+    container[ACTION_ANCHOR] = new EnchantSpell(Spell(Action(functions[ACTION_ANCHOR], visibility_range, 2, 0,
+        STR_ACTION_ANCHOR, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_DEBUFF),
+        10, G_ZO, G_ZO), ENCHANT_ANCHOR);
+    container[ACTION_BURN] = new Spell(Action(functions[ACTION_BURN], visibility_range, 2, 0,
+        STR_ACTION_BURN, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_MUST_TARGET_VISIBLE),
+        10, G_ZO, G_ZO, G_UN, G_UN);
+    container[ACTION_CHANNEL] = new ChannelingSpell(Spell(Action(functions[ACTION_CHANNEL], 0, 2, 0,
+        STR_ACTION_CHANNEL, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS + AFLAG_IS_Channeling + AFLAG_IS_BROKEN_BY_DAMAGE),
+        0, G_KA, G_ZO, G_IN), Action_ChannelingEffect(CONT_CHANNEL_LIFE, Channeling_functions[CONT_CHANNEL_LIFE], STR_CONT_CHANNEL_LIFE));
+    container[ACTION_COUNTERSPELL] = new Spell(Action(functions[ACTION_COUNTERSPELL], visibility_range / 2, 2, 0,
+        STR_ACTION_COUNTERSPELL, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS + AFLAG_IS_AGGRESSIVE),
+        20, G_ZO, G_DO);
+    container[ACTION_DISPELL_UNDEAD] = new Spell(Action(functions[ACTION_DISPELL_UNDEAD], 2, 2, 2,
+        STR_ACTION_DISPELL_UNDEAD, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS + AFLAG_IS_AGGRESSIVE),
+        60, G_UN, G_KA, G_ET, G_RO, G_ZO, G_DO, G_CHA, G_IN);
+    container[ACTION_DEATHRAY] = new Spell(Action(functions[ACTION_DEATHRAY], visibility_range, 2, 0,
+        STR_ACTION_DEATHRAY, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_VISIBLE + AFLAG_IS_AGGRESSIVE + AFLAG_CANT_TARGET_SELF + AFLAG_MUST_TURN_TO_TARGET),
+        60, G_DO, G_DO);
+    container[ACTION_ENERGY_BOLT] = new ChannelingSpell(Spell(Action(functions[ACTION_ENERGY_BOLT], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_ENERGY_BOLT, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_IS_Channeling + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_CANT_TARGET_SELF + AFLAG_IS_BROKEN_BY_DAMAGE),
+        0, G_ZO, G_CHA, G_ET, G_UN), Action_ChannelingEffect(CONT_ENERGY_BOLT, Channeling_functions[CONT_ENERGY_BOLT], STR_CONT_ENERGY_BOLT));
+    container[ACTION_EARTHQUAKE] = new Spell(Action(functions[ACTION_EARTHQUAKE], visibility_range/2 + 1, 2, 2,
+        STR_ACTION_EARTHQUAKE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS + AFLAG_IS_AGGRESSIVE),
+        60, G_DO, G_ET, G_IN, G_RO, G_CHA, G_KA);
+    container[ACTION_LIGHTNING] = new ChannelingSpell(Spell(Action(functions[ACTION_LIGHTNING], visibility_range/2 + 1, 2, 2,
+        STR_ACTION_LIGHTNING, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_IS_Channeling + AFLAG_CANT_TARGET_SELF + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_BROKEN_BY_DAMAGE),
+        0, G_ZO, G_CHA, G_ET, G_UN, G_ET, G_CHA, G_ZO), Action_ChannelingEffect(CONT_LIGHTNING, Channeling_functions[CONT_LIGHTNING], STR_CONT_LIGHTNING));
+    container[ACTION_PROTECTION_FIRE] = new EnchantSpell(Spell(Action(functions[ACTION_PROTECTION_FIRE], visibility_range, 2, 0,
+        STR_ACTION_PROTECTION_FIRE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        30, G_ET, G_CHA, G_DO, G_KA), ENCHANT_PROTECTION_FIRE);
+    container[ACTION_PROTECTION_SHOCK] = new EnchantSpell(Spell(Action(functions[ACTION_PROTECTION_SHOCK], visibility_range, 2, 0,
+        STR_ACTION_PROTECTION_SHOCK, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        30, G_CHA, G_ET, G_DO, G_KA), ENCHANT_PROTECTION_SHOCK);
+    container[ACTION_PROTECTION_POISON] = new EnchantSpell(Spell(Action(functions[ACTION_PROTECTION_POISON], visibility_range, 2, 0,
+        STR_ACTION_PROTECTION_VENOM, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        30, G_ET, G_CHA, G_RO, G_IN), ENCHANT_PROTECTION_POISON);
+    container[ACTION_FORCEFIELD] = new EnchantSpell(Spell(Action(functions[ACTION_FORCEFIELD], visibility_range, 2, 2,
+        STR_ACTION_FORCEFIELD, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        60, G_UN, G_ET, G_ZO, G_CHA, G_UN, G_ET, G_ZO, G_CHA), ENCHANT_FORCE_FIELD);
+    container[ACTION_HEAL_LESSER] = new Spell(Action(functions[ACTION_HEAL_LESSER], visibility_range, 2, 0,
+        STR_ACTION_HEAL_LESSER, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET),
+        30, G_DO, G_UN, G_RO);
+    container[ACTION_HEAL_GREATER] = new ChannelingSpell(Spell(Action(functions[ACTION_HEAL_GREATER], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_HEAL_GREATER, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_UNIT + AFLAG_IS_Channeling + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_BROKEN_BY_DAMAGE),
+        0, G_RO, G_UN, G_DO), Action_ChannelingEffect(CONT_GREATER_HEAL, Channeling_functions[CONT_GREATER_HEAL], STR_CONT_GREATER_HEAL));
+    container[ACTION_HASTE] = new EnchantSpell(Spell(Action(functions[ACTION_HASTE], visibility_range, 2, 0,
+        STR_ACTION_HASTE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        10, G_ET, G_CHA, G_CHA), ENCHANT_HASTE);
+    container[ACTION_INVERSION] = new Spell(Action(functions[ACTION_INVERSION], visibility_range/2, 2, 0,
+        STR_ACTION_INVERSION, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS),
+        10, G_KA, G_IN);
+    container[ACTION_MAGIC_MISSILE] = new ProjectileSpell(Spell(Action(functions[ACTION_MAGIC_MISSILE], visibility_range, 2, 0,
+        STR_ACTION_MAGIC_MISSILE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_CANT_TARGET_SELF),
+        20, G_ET, G_UN, G_CHA, G_UN), ENT_MAGIC_MISSILE, true);
+    container[ACTION_MANA_DRAIN] = new ChannelingSpell(Spell(Action(functions[ACTION_MANA_DRAIN], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_MANA_DRAIN, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS + AFLAG_IS_Channeling + AFLAG_IS_BROKEN_BY_DAMAGE),
+        0, G_UN, G_KA, G_ZO, G_IN), Action_ChannelingEffect(CONT_DRAIN_MANA, Channeling_functions[CONT_DRAIN_MANA], STR_CONT_DRAIN_MANA));
+    container[ACTION_PULL] = new Spell(Action(functions[ACTION_PULL], visibility_range/2, 2, 0,
+        STR_ACTION_PULL, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS),
+        10, G_UN, G_UN, G_ZO);
+    container[ACTION_PUSH] = new Spell(Action(functions[ACTION_PUSH], visibility_range/2, 2, 0,
+        STR_ACTION_PUSH, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_TARGETLESS),
+        10, G_UN, G_UN, G_UN);
+    container[ACTION_REFLECTIVE_SHIELD] = new EnchantSpell(Spell(Action(functions[ACTION_REFLECTIVE_SHIELD], 0, 2, 0,
+        STR_ACTION_REFLECTIVE_SHIELD, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_ENCHANT + AFLAG_IS_TARGETLESS),
+        30, G_UN, G_ZO, G_ZO, G_RO, G_DO), ENCHANT_REFLECTIVE_SHIELD);
+    container[ACTION_FIRE_RING] = new Spell(Action(functions[ACTION_FIRE_RING], 2, 2, 0,
+        STR_ACTION_FIRE_RING, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_IS_TARGETLESS),
+        60, G_DO, G_ZO, G_RO, G_UN);
+    container[ACTION_SHOCK] = new EnchantSpell(Spell(Action(functions[ACTION_SHOCK], visibility_range, 2, 0,
+        STR_ACTION_SHOCK, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        30, G_ZO, G_CHA, G_ET, G_ET), ENCHANT_SHOCK);
+    container[ACTION_SLOW] = new EnchantSpell(Spell(Action(functions[ACTION_SLOW], visibility_range, 2, 0,
+        STR_ACTION_SLOW, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_DEBUFF),
+        15, G_ZO, G_ZO, G_ZO), ENCHANT_SLOW);
+    container[ACTION_SWAP] = new ProjectileSpell(Spell(Action(functions[ACTION_SWAP], visibility_range, 2, 0,
+        STR_ACTION_SWAP, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_CANT_BE_ANCHORED + AFLAG_CANT_TARGET_SELF),
+        15, G_UN, G_UN, G_ZO, G_ZO), ENT_SWAPBALL, true);
+    container[ACTION_TELEPORT] = new Spell(Action(functions[ACTION_TELEPORT], visibility_range, 2, 0,
+        STR_ACTION_TELEPORT, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_MUST_TARGET_EMPTY + AFLAG_CANT_BE_ANCHORED),
+        20, G_ZO, G_UN, G_ET, G_CHA);
+    container[ACTION_WALL] = new Spell(Action(functions[ACTION_WALL], visibility_range, 2, 0,
+        STR_ACTION_WALL, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_EMPTY + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET),
+        30, G_KA, G_UN, G_IN);
+    container[ACTION_FIST_OF_VENGEANCE] = new Spell(Action(functions[ACTION_FIST_OF_VENGEANCE], visibility_range, 2, 0,
+        STR_ACTION_FIST_OF_VENGEANCE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_AGGRESSIVE),
+        60, G_KA, G_IN, G_UN, G_ZO);
+    container[ACTION_VAMPIRISM] = new EnchantSpell(Spell(Action(functions[ACTION_VAMPIRISM], visibility_range, 2, 0,
+        STR_ACTION_VAMPIRISM, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_BUFF),
+        30, G_UN, G_ZO, G_ET, G_CHA), ENCHANT_VAMPIRISM);
+    container[ACTION_STUN] = new EnchantSpell(Spell(Action(functions[ACTION_STUN], visibility_range, 2, 0,
+        STR_ACTION_STUN, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_DEBUFF),
+        10, G_KA, G_ZO), ENCHANT_STUN);
+    container[ACTION_TOXIC_CLOUD] = new Spell(Action(functions[ACTION_TOXIC_CLOUD], visibility_range, 2, 0,
+        STR_ACTION_TOXIC_CLOUD, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_AGGRESSIVE),
+        60, G_IN, G_RO, G_KA);
+    container[ACTION_FORCE_OF_NATURE] = new ProjectileSpell(Spell(Action(functions[ACTION_FORCE_OF_NATURE], 0, 2, 2,
+        STR_ACTION_FORCE_OF_NATURE, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_AGGRESSIVE + AFLAG_CANT_TARGET_SELF),
+        60, G_DO, G_RO, G_ZO, G_, G_, G_, G_, G_), ENT_FON, false);
+    container[ACTION_PIXIES] = new EnchantSpell(Spell(Action(functions[ACTION_PIXIES], visibility_range, 2, 0,
+        STR_ACTION_PIXIES, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_ENCHANT + AFLAG_IS_AGGRESSIVE + AFLAG_IS_TARGETLESS),
+        30, G_ET, G_ZO, G_CHA, G_ZO), ENCHANT_PIXIES);
+    container[ACTION_CHARM] = new ChannelingSpell(Spell(Action(functions[ACTION_CHARM], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_CHARM, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_IS_Channeling + AFLAG_MUST_TARGET_UNIT + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_CANT_TARGET_SELF),
+        10, G_KA, G_IN, G_ZO), Action_ChannelingEffect(CONT_CHARM, Channeling_functions[CONT_CHARM], STR_CONT_CHARM));
+    container[ACTION_METEOR] = new Spell(Action(functions[ACTION_METEOR], visibility_range, 2, 0,
+        STR_ACTION_METEOR, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_MUST_TARGET_VISIBLE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_IS_AGGRESSIVE),
+        30, G_RO, G_RO);
+    container[ACTION_POISON] = new EnchantSpell(Spell(Action(functions[ACTION_POISON], visibility_range, 2, 0,
+        STR_ACTION_POISON, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_DEBUFF),
+        10, G_IN, G_RO), ENCHANT_POISON);
+    container[ACTION_NULLIFY] = new EnchantSpell(Spell(Action(functions[ACTION_POISON], visibility_range, 2, 0,
+        STR_ACTION_NULLIFY, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_DEBUFF),
+        10, G_IN, G_RO), ENCHANT_NULLIFICATION);
+    container[ACTION_OBLITERATION] = new ChannelingSpell(Spell(Action(functions[ACTION_OBLITERATION], visibility_range, 2, 2,
+        STR_ACTION_OBLITERATION, STR_CASTED_SPELL, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_SPELL + AFLAG_IS_AGGRESSIVE + AFLAG_IS_Channeling + AFLAG_IS_TARGETLESS),
+        10, G_UN, G_UN, G_ET, G_ET, G_ZO, G_ZO, G_CHA, G_CHA), Action_ChannelingEffect(CONT_OBLITERATION, Channeling_functions[CONT_OBLITERATION], STR_CONT_OBLITERATION, false));
+    container[ACTION_BERSERKER] = new Ability(Action(functions[ACTION_BERSERKER], visibility_range, 2, 0,
+        STR_ACTION_BERSERKER, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_ABILITY + AFLAG_IS_AGGRESSIVE + AFLAG_MUST_TURN_TO_TARGET + AFLAG_CANT_TARGET_SELF),
+        5);
+    container[ACTION_HARPOON] = new Ability(Action(functions[ACTION_HARPOON], visibility_range/2, 2, 0,
+        STR_ACTION_HARPOON, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_ABILITY + AFLAG_IS_AGGRESSIVE + AFLAG_CANT_TARGET_SELF + AFLAG_MUST_TURN_TO_TARGET),
+        4);
+    container[ACTION_WARCRY] = new Ability(Action(functions[ACTION_WARCRY], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_WARCRY, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_ABILITY + AFLAG_IS_AGGRESSIVE + AFLAG_IS_TARGETLESS),
+        5);
+    container[ACTION_HAMMER] = new Action(functions[ACTION_HAMMER], 1, 2, 2,
+        STR_ACTION_HAMMER, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_IS_MELEE);
+    container[ACTION_LONGSWORD] = new Action(functions[ACTION_LONGSWORD], 1, 2, 0,
+        STR_ACTION_LONGSWORD, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_IS_MELEE);
+    container[ACTION_MACE] = new Action(functions[ACTION_MACE], 1, 2, 0,
+        STR_ACTION_MACE, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_IS_MELEE);
+    container[ACTION_BOW] = new ProjectileAction(Action(functions[ACTION_BOW], 0, 2, 0,
+        STR_ACTION_BOW, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO), ENT_ARROW, false);
+    container[ACTION_FORCE_STAFF] = new ChannelingAction(Action(functions[ACTION_FORCE_STAFF], visibility_range/2 + 1, 2, 0,
+        STR_ACTION_FORCE_STAFF, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO+AFLAG_MUST_TARGET_VISIBLE+AFLAG_MUST_TARGET_UNIT + AFLAG_IS_BROKEN_BY_DAMAGE),
+        Action_ChannelingEffect(CONT_LIGHTNING_STAFF, Channeling_functions[CONT_LIGHTNING_STAFF], STR_CONT_LIGHTNING_STAFF));
+    container[ACTION_FIRE_STAFF] = new ProjectileAction(Action(functions[ACTION_FIRE_STAFF], 0, 2, 0,
+        STR_ACTION_FIRE_STAFF, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO), ENT_FIREBALL_SMALL, false);
+    container[ACTION_HELLFIRE_STAFF] = new Action(functions[ACTION_HELLFIRE_STAFF], 0, 2, 0,
+        STR_ACTION_HELLFIRE_STAFF, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO);
+    container[ACTION_SHURIKEN] = new ProjectileAction(Action(functions[ACTION_SHURIKEN], 0, 2, 0,
+        STR_ACTION_SHURIKEN, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO+AFLAG_IS_QUICK), ENT_SHURIKEN, false);
+    container[ACTION_FIRESWORD] = new Action(functions[ACTION_FIRESWORD], 1, 2, 0,
+        STR_ACTION_FIRESWORD, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_IS_MELEE+AFLAG_IS_QUICK);
+    container[ACTION_FON_STAFF] = new ProjectileAction(Action(functions[ACTION_FON_STAFF], 0, 2, 2,
+        STR_ACTION_FON_STAFF, NO_STRING, NO_STRING, NO_STRING, NO_STRING, NO_STRING,
+        AFLAG_IS_AGGRESSIVE+AFLAG_CANT_TARGET_SELF+AFLAG_MUST_TURN_TO_TARGET+AFLAG_NEED_AMMO), ENT_FON, false);
+}
+void Loader::loadGestures(GestureContainer& container) {
+    container.reserve(Counters::gestures);
+    container.push_back(new Gesture(0));
+    container.push_back(new Gesture(1));
+    container.push_back(new Gesture(2));
+    container.push_back(new Gesture(3));
+    container.push_back(new Gesture(4));
+    container.push_back(new Gesture(5));
+    container.push_back(new Gesture(6));
+    container.push_back(new Gesture(7));
+    container.push_back(new Gesture(8));
+}
+void Loader::loadEnchants(EnchantContainer& container) {
+    container.resize(Counters::enchants);
+
+    container[NO_ENCHANT] = new Enchant(NO_STRING, NO_ENCHANT, 0);
+    container[ENCHANT_ANCHOR] = new Enchant(STR_ENCHANT_ANCHOR, ENCHANT_ANCHOR, 4);
+    container[ENCHANT_FORCE_FIELD] = new Enchant(STR_ENCHANT_FORCE_FIELD, ENCHANT_FORCE_FIELD, 50, false, false);
+    container[ENCHANT_HASTE] = new Enchant(STR_ENCHANT_HASTE, ENCHANT_HASTE, 4);
+    container[ENCHANT_PIXIES] = new Enchant(STR_ENCHANT_PIXIES, ENCHANT_PIXIES, 255, true, false);
+    container[ENCHANT_POISON] = new Enchant(STR_ENCHANT_POISON, ENCHANT_POISON, 4);
+    container[ENCHANT_PROTECTION_FIRE] = new Enchant(STR_ENCHANT_PROTECTION_FIRE, ENCHANT_PROTECTION_FIRE, 6);
+    container[ENCHANT_PROTECTION_POISON] = new Enchant(STR_ENCHANT_PROTECTION_POISON, ENCHANT_PROTECTION_POISON, 6);
+    container[ENCHANT_PROTECTION_SHOCK] = new Enchant(STR_ENCHANT_PROTECTION_SHOCK, ENCHANT_PROTECTION_SHOCK, 6);
+    container[ENCHANT_REFLECTIVE_SHIELD] = new Enchant(STR_ENCHANT_REFLECTIVE_SHIELD, ENCHANT_REFLECTIVE_SHIELD, 255, false, false, true, true);
+    container[ENCHANT_SLOW] = new Enchant(STR_ENCHANT_SLOW, ENCHANT_SLOW, 3);
+    container[ENCHANT_STUN] = new Enchant(STR_ENCHANT_STUN, ENCHANT_STUN, 1);
+    container[ENCHANT_VAMPIRISM] = new Enchant(STR_ENCHANT_VAMPIRISM, ENCHANT_VAMPIRISM, 6);
+    container[ENCHANT_SHOCK] = new Enchant(STR_ENCHANT_SHOCK, ENCHANT_SHOCK, 6, true);
+    container[ENCHANT_NULLIFICATION] = new Enchant(STR_ENCHANT_NULLIFICATION, ENCHANT_NULLIFICATION, 3);
 }

@@ -2,6 +2,7 @@
 #define max(a,b)    (((a) > (b)) ? (a) : (b))
 #define min(a,b)    (((a) < (b)) ? (a) : (b))
 #include "Geometry.h"
+#include <vector>
 typedef int TextureHandler;
 typedef int SoundHandler;
 const TextureHandler EMPTY_TEXTURE = 0;
@@ -685,9 +686,9 @@ namespace Errors
     class UnitNegativeCooldown: public ErrorBase
     {
         const Entity* ent;
-        enumCooldowns id;
+        const Action* action;
     public:
-        UnitNegativeCooldown(const Entity* ent, enumCooldowns id): ent(ent), id(id) {}
+        UnitNegativeCooldown(const Entity* ent, const Action* action): ent(ent), action(action) {}
         virtual string Text() const {
             return "The unit has got negative value of a cooldown";
         }
@@ -706,11 +707,11 @@ namespace Errors
     class UnitNullCSpellTarget: public ErrorBase
     {
         const Entity* ent;
-        enumChannelingActions id;
+        const Action* action;
     public:
-        UnitNullCSpellTarget(const Entity* ent, enumChannelingActions id): ent(ent), id(id) {}
+        UnitNullCSpellTarget(const Entity* ent, const Action* action): ent(ent), action(action) {}
         virtual string Text() const {
-            return "The unit has got more move points, than speed";
+            return "The unit has got null pointer as channel spell target";
         }
         virtual ~UnitNullCSpellTarget() {}
     };

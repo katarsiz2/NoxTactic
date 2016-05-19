@@ -137,7 +137,7 @@ dir(dir), team(team), object_owner(nullptr), subs(), is_dead(false), is_paralyze
 Unit::Unit(const DefaultUnit& prototype, const CoordI& coor, ::Team team, Direction dir):
 Entity(static_cast<const DefaultEntity&>(prototype), coor, team, dir),
 enchants(), cooldowns(), movepoints(prototype.speed), ammo(prototype.ammo),
-ammo_manabuffer(0), is_in_blocking_state(true), action_points(2), long_action(), c_action(){}
+ammo_manabuffer(0), is_in_blocking_state(true), action_points(2), long_action(), channelings(){}
 CommonProjectile::CommonProjectile(const DefaultProjectile& prototype, const CoordI& coor, ::Team team, Entity* source, ::Angle angle):
 Projectile(Entity(static_cast<const DefaultEntity&>(prototype), coor, team, angle.getDirection())),
 speed(prototype.speed), angle(angle), ex_coor(CoordD(0.5, 0.5) + coor) {}
@@ -591,15 +591,13 @@ void Unit::StartTurn(){
     if (!IsBusy()) {
         action_points = 2;
     }
-    for (int i = 0; i < Counters::cooldowns; ++i) {
-        if (cooldowns[i] > 0) {cooldowns[i]--;}
-    }
+    cooldowns.DecreaseAll();
 }
 void Unit::EndTurn() {
     lastcoor = coor;
     bool set_block = !IsBusy();
     for (int i = 0; i < Counters::Channeling_actions; ++i) {
-        if (c_action[i].Is_Cast) { set_block = false; }
+        if (!channelings.IsIteratorInside(channelings.GetIterator())) { set_block = false; }       //if any channel actions are made, unit can't block
     }
     if (set_block) {
         switch (GetPrototype().weapon->block_quality) {
@@ -611,7 +609,7 @@ void Unit::EndTurn() {
             }
             break;
         case BLOCK_SHIELD:
-            if (action_points == 2 && movepoints == Speed()) {
+            if (action_points == 2 && movepoints == Speed()) {  //can only block with shield if did nothing
                 is_in_blocking_state = true;
             }
             break;
@@ -620,9 +618,7 @@ void Unit::EndTurn() {
 }
 
 void Unit::StopCSpells() {
-    for (int i = 0; i < Counters::Channeling_actions; ++i) {
-        c_action[i].UnSet();
-    }
+    channelings.DeleteAll();
 }
 
 Entity* Entity::Clone() const {
@@ -709,17 +705,17 @@ ErrorBase* Unit::CheckConsistency() const
             return new Errors::UnitNegativeEnchant(this, static_cast<enumEnchants>(i));
         }
     }
-    for (int i = 0; i < Counters::cooldowns; ++i) {
-        if (cooldowns[i] < 0) {
-            return new Errors::UnitNegativeCooldown(this, static_cast<enumCooldowns>(i));
+    for (auto it = cooldowns.GetIterator(); cooldowns.IsIteratorInside(it); ++it) {
+        if (it->second < 0) {
+            return new Errors::UnitNegativeCooldown(this, it->first);
         }
     }
     if (movepoints > Speed()) {
         return new Errors::UnitMovepointsMoreThanSpeed(this);
     }
-    for (int i = 0; i < Counters::Channeling_actions; ++i) {
-        if (c_action[i].Is_Cast && (c_action[i].target == nullptr)) {
-            return new Errors::UnitNullCSpellTarget(this, static_cast<enumChannelingActions>(i));
+    for (auto it = channelings.GetIterator(); channelings.IsIteratorInside(it); ++it) {
+        if ((*it).second.target == nullptr) {
+            return new Errors::UnitNullCSpellTarget(this, (*it).first);
         }
     }
     return nullptr;

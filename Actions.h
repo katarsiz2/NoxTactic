@@ -1,8 +1,12 @@
 #pragma once
 #ifndef ACTIONS_DEF
 #define ACITONS_DEF
-#include "Core.h"
+//#include "Core.h"
 #include "Constants.h"
+#include <vector>
+#include "Strings.h"
+using std::vector;
+class Battle;
 class Gesture
 {
     SoundHandler sound;
@@ -32,7 +36,8 @@ protected:
     bool homing;
 public:
     Action_ProjectileLauncher(enumEntities projectile_id, bool homing);
-    void Launch(Battle* battle, Entity* actor, const CoordI& target) const;
+    bool IsHoming() const { return homing; }
+    enumEntities ProjectileID() const { return projectile_id; }
 };
 class Action
 {
@@ -53,6 +58,7 @@ public:
     bool Flag(const long flag) const { return ((flags & flag) != 0); }
     bool IsLengthy() const { return time_to_perform != 0; }
     int TimeToPerform() const { return time_to_perform; }
+    int APCost() const { return action_points_cost; }
     TextureHandler MyIcon() const { return icon_texture_id; }
     TextureHandler MyActiveIcon() const { return active_icon_texture_id; }
     SoundHandler MySound() const { return sound; }
@@ -63,14 +69,11 @@ public:
     void SetActiveIcon(TextureHandler texture) { active_icon_texture_id = texture; }
     void SetSound(SoundHandler sound) { this->sound = sound; }
     virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual bool CheckForValidity(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual void ApplyPenalties(Battle* battle, Entity* actor, const CoordI& target) const;
 };
 class ChannelingAction: public Action, public Action_ChannelingEffect
 {
 public:
     ChannelingAction(const Action& action, Action_ChannelingEffect cont_action);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
     virtual bool ApplyEffect(Battle* battle, Entity* actor, Entity* target) const;
     virtual enumStrings PerformingTip() const { return performing_tip; }
     virtual enumChannelingActions ChannelingID() const { return ID(); }
@@ -84,17 +87,14 @@ protected:
 public:
     Spell(const Action& action, int manacost, enumGestures g1, enumGestures g2 = G_, enumGestures g3 = G_,
         enumGestures g4 = G_, enumGestures g5 = G_, enumGestures g6 = G_, enumGestures g7 = G_, enumGestures g8 = G_);
-
+    int Manacost() const { return manacost; }
     virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual bool CheckForValidity(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual void ApplyPenalties(Battle* battle, Entity* actor, const CoordI& target) const;
     friend Action;
 };
 class ChannelingSpell: public Spell, public Action_ChannelingEffect
 {
 public:
     ChannelingSpell(const Spell& spell, Action_ChannelingEffect cont_action);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
     virtual bool ApplyEffect(Battle* battle, Entity* actor, Entity* target) const;
     virtual enumStrings PerformingTip() const { return performing_tip; }
     virtual enumChannelingActions ChannelingID() const { return ID(); }
@@ -103,57 +103,25 @@ class ProjectileSpell: public Spell, public Action_ProjectileLauncher
 {
 public:
     ProjectileSpell(const Spell& spell, enumEntities id, bool homing);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
 };
 class ProjectileAction: public Action, public Action_ProjectileLauncher
 {
 public:
     ProjectileAction(const Action& action, enumEntities id, bool homing);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
 };
 class EnchantSpell: public Spell
 {
     enumEnchants id;
 public:
     EnchantSpell(const Spell& spell, enumEnchants id);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
+    enumEnchants EnchantID() const { return id; }
 };
 class Ability: public Action
 {
     const int cooldown;
-    enumCooldowns cd_index;
 public:
-    Ability(const Action& action, int cooldown, enumCooldowns cd_index);
-    virtual void Perform(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual bool CheckForValidity(Battle* battle, Entity* actor, const CoordI& target) const;
-    virtual void ApplyPenalties(Battle* battle, Entity* actor, const CoordI& target) const;
+    Ability(const Action& action, int cooldown);
+    int Cooldown() const { return cooldown; }
 };
 
-class Map
-{
-    CoordI size;
-    vector<Entity *> entities;
-    vector<vector<Wall*>> walls;
-    vector<vector<Tile*>> tiles;
-    int players_count;
-public:
-    Map(const CoordI& size, const vector<Entity *>& entities, vector<vector<Wall*>> walls, vector<vector<Tile*>> tiles, const int players_count):
-        size(size), entities(entities), walls(walls), tiles(tiles), players_count(players_count) {}
-    ~Map();
-    void Destroy();
-    friend class Battle;
-};
-
-namespace Loader
-{
-    void loadActions(ActionContainer& container,
-        FunctionContainer& functions, ChannelingFunctionContainer& Channeling_functions);
-
-    void loadGestures(GestureContainer& container);
-
-    void loadEnchants(EnchantContainer& container);
-
-    void loadMaps(MapContainer& container, EntityContainer& entities,
-        WallContainer& walls, TileContainer& tiles);
-};
 #endif

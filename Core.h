@@ -15,7 +15,22 @@ class Battle;
 class MapEditor;
 class Graphics;
 class Input;
-#define use_mapeditor false //HACK: no game menu yet
+#define use_mapeditor true //HACK: no game menu yet
+
+class Map
+{
+    CoordI size;
+    vector<Entity *> entities;
+    vector<vector<Wall*>> walls;
+    vector<vector<Tile*>> tiles;
+    int players_count;
+public:
+    Map(const CoordI& size, const vector<Entity *>& entities, vector<vector<Wall*>> walls, vector<vector<Tile*>> tiles, const int players_count):
+        size(size), entities(entities), walls(walls), tiles(tiles), players_count(players_count) {}
+    ~Map();
+    void Destroy();
+    friend class Battle;
+};
 
 class Logger
 {
@@ -434,7 +449,7 @@ public:
     void BurnMP(Entity* ent, int value);
     int Damage(Entity* source, Entity* target, const Dmg damage);
     void Kill(Entity* ent, Entity* killer);
-    void StopCActions(Entity* ent);
+    void StopChannelActions(Entity* ent, bool dispell = false);
     //return true, if further automatic move is impossible
     bool Move(Entity* ent, const CoordI& dest, const Direction dir = NO_DIRECTION, bool Env = true, bool EnvSource = true);
     bool PushTo(Entity* ent, const Direction dir);
@@ -473,6 +488,14 @@ public:
     }
     friend Game;
     friend Renderer;
+
+
+    bool CheckActionValidity(const Action* action, const Entity* actor, const CoordI& target);
+    void PayActionCost(const Action* action, Entity* actor, const CoordI& target);
+    void ProjectileActionPerform(Entity* source, const CoordI& coor, const Action* me);
+    void EnchantSpellPerform(Entity* source, const CoordI& coor, const Action* me);
+    void ChannelingActionPerform(Entity* source, const CoordI& coor, const Action* me);
+
     //===========ACTIONS=============
     void MeleeStrike(Entity* source, const CoordI& coor, const Action* me);
     void LightningApply_common(Unit* source, Entity* target, const Action* me, int& magic_reserve);
@@ -529,4 +552,18 @@ public:
     void ToxicCloudTrigger(Entity* object_activator, Entity* object_trigger, enumTriggerActivationType activation_type, const Direction dir);
     void DispellerTrigger(Entity* object_activator, Entity* object_trigger, enumTriggerActivationType activation_type, const Direction dir);
     
+};
+
+
+namespace Loader
+{
+    void loadActions(ActionContainer& container,
+        FunctionContainer& functions, ChannelingFunctionContainer& Channeling_functions);
+
+    void loadGestures(GestureContainer& container);
+
+    void loadEnchants(EnchantContainer& container);
+
+    void loadMaps(MapContainer& container, EntityContainer& entities,
+        WallContainer& walls, TileContainer& tiles);
 };
